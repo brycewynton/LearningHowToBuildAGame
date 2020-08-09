@@ -1,10 +1,8 @@
 package com.tutorial.main;
 
-
 import javax.swing.JFrame;
 import java.awt.Canvas;
 import java.awt.Dimension;
-
 
 
 public class Window extends Canvas
