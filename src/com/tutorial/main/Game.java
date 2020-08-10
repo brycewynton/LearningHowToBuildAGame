@@ -15,11 +15,8 @@ public class Game extends Canvas implements Runnable
     private boolean running = false;
 
     private Random r;
-
     private Handler handler;
-
     private HUD hud;
-
     private Spawn spawner;
 
     public Game()
@@ -38,15 +35,8 @@ public class Game extends Canvas implements Runnable
 
         handler.addObject(new Player(WIDTH/2-32, HEIGHT/2-32, ID.Player , handler));
 
-        handler.addObject(new BasicEnemy(r.nextInt((int)  Game.WIDTH), r.nextInt( (int)  Game.HEIGHT), ID.BasicEnemy, handler));
+        handler.addObject(new EnemyBoss1((Game.WIDTH / 2)-78, -180, ID.EnemyBoss1, handler));
 
-
-        /*  // populating enemies before separate class
-        for (int i = 0; i < 5; i++)
-        {
-            handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.BasicEnemy, handler ));
-        }
-         */
     }
 
     public synchronized void start()

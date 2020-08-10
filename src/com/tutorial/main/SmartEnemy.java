@@ -35,36 +35,20 @@ public class SmartEnemy extends GameObject
             if ( y <= 0 || y >= Game.HEIGHT - 32) velY *= -1;
             if ( x <= 0 || x >= Game.HEIGHT - 16) velX *= -1;
 
-            handler.addObject(new Trail( (int) x, (int) y, ID.Trail, Color.green, 16,16, 0.05f, handler));
+            handler.addObject(new Trail( (int) x, (int) y, ID.Trail, Color.red, 16,16, 0.04f, handler));
 
-            collision();
         }
 
         @Override
         public void render(Graphics g)
         {
-            g.setColor(Color.green);
-            g.fillRect( (int) x, (int)y,16,16);
+            g.setColor(Color.red);
+            g.fillRect( (int) x, (int) y,16,16);
         }
         @Override
         public Rectangle getBounds()
         {
             return new Rectangle( (int) x, (int) y,16,16);
-        }
-
-        private void collision()
-        {
-            for (int i = 0; i < handler.object.size(); i++)
-            {
-                GameObject tempObject = handler.object.get(i);
-                if (tempObject.getID() == ID.PlayerTrail)
-                {
-                    if (getBounds().intersects(tempObject.getBounds()))  // tempObject refers to player Trail in this instance
-                    {
-                        HUD.HEALTH += 10;  // player health increases if he touches the police officers with trail
-                    }
-                }
-            }
         }
     }
 

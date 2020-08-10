@@ -34,11 +34,18 @@ public class Player extends GameObject
         {
             GameObject tempObject = handler.object.get(i);
 
-            if (tempObject.getID() ==  ID.BasicEnemy)
+            if (tempObject.getID() == ID.BasicEnemy || tempObject.getID() == ID.FastEnemy || tempObject.getID() == ID.SmartEnemy)
             {
                 if (getBounds().intersects(tempObject.getBounds()))  // tempObject referws to basicEnemy in this instance
                 {
                     HUD.HEALTH -= 2;  // player health decreases if touch by the police officers
+                }
+            }
+            else if (tempObject.getID() ==  ID.HealthPellet)
+            {
+                if (getBounds().intersects(tempObject.getBounds()))  // tempObject referws to basicEnemy in this instance
+                {
+                    HUD.HEALTH += 8;  // player health decreases if touch by the police officers
                 }
             }
         }

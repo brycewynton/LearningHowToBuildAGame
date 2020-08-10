@@ -25,8 +25,6 @@ public class FastEnemy extends GameObject
 
         handler.addObject(new Trail( (int) x, (int) y, ID.Trail, Color.blue, 16,16, 0.05f, handler));
 
-        collision();
-
     }
 
     @Override
@@ -39,21 +37,6 @@ public class FastEnemy extends GameObject
     public Rectangle getBounds()
     {
         return new Rectangle((int) x, (int) y,16,16);
-    }
-
-    private void collision()
-    {
-        for (int i = 0; i < handler.object.size(); i++)
-        {
-            GameObject tempObject = handler.object.get(i);
-            if (tempObject.getID() == ID.PlayerTrail)
-            {
-                if (getBounds().intersects(tempObject.getBounds()))  // tempObject refers to player Trail in this instance
-                    {
-                        HUD.HEALTH += 10;  // player health increases if he touches the police officers with trail
-                    }
-            }
-        }
     }
 }
 
