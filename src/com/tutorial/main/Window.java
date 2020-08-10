@@ -9,15 +9,15 @@ public class Window extends Canvas
 {
     private static final long serialVersionUID = -240840600533728354L;
 
-    public Window(int width, int height, String title, Game game)
+    public Window(float width, float height, String title, Game game)
     {
         //frame of our window from JRE Library
         // set variable name to frame
         JFrame frame = new JFrame(title);
         // set up a new dimension with our preferred width and height
-        frame.setPreferredSize(new Dimension(width, height));
-        frame.setMaximumSize(new Dimension(width, height));
-        frame.setMinimumSize(new Dimension(width, height));
+        frame.setPreferredSize(new Dimension((int) width, (int) height));
+        frame.setMaximumSize(new Dimension((int) width, (int) height));
+        frame.setMinimumSize(new Dimension((int) width, (int) height));
         //A way to actually stop the thread running the game operation
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //Does not allow user to reset frame size

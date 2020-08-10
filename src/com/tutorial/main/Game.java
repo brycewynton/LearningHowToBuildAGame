@@ -10,7 +10,7 @@ import java.util.Random;
 public class Game extends Canvas implements Runnable
 {
     private static final long serialVersionUID = 1550691097823471818L;
-    public static final int WIDTH = 640, HEIGHT = WIDTH / 12 * 9;
+    public static final float WIDTH = 640, HEIGHT = WIDTH / 12 * 9;
     private Thread thread;
     private boolean running = false;
 
@@ -19,6 +19,8 @@ public class Game extends Canvas implements Runnable
     private Handler handler;
 
     private HUD hud;
+
+    private Spawn spawner;
 
     public Game()
     {
@@ -30,14 +32,21 @@ public class Game extends Canvas implements Runnable
 
         hud = new HUD();
 
+        spawner = new Spawn(handler, hud);
+
         r = new Random();
 
-        handler.addObject(new Player(WIDTH/2-32, HEIGHT/2-32, ID.Player ));
+        handler.addObject(new Player(WIDTH/2-32, HEIGHT/2-32, ID.Player , handler));
 
-        for (int i = 0; i < 20; i++)
+        handler.addObject(new BasicEnemy(r.nextInt((int)  Game.WIDTH), r.nextInt( (int)  Game.HEIGHT), ID.BasicEnemy, handler));
+
+
+        /*  // populating enemies before separate class
+        for (int i = 0; i < 5; i++)
         {
-        handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.BasicEnemy ));
+            handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.BasicEnemy, handler ));
         }
+         */
     }
 
     public synchronized void start()
@@ -66,7 +75,7 @@ public class Game extends Canvas implements Runnable
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
         long timer = System.currentTimeMillis();
-        int frames = 0;
+        float frames = 0;
         while (running)
         {
             long now = System.nanoTime();
@@ -97,6 +106,7 @@ public class Game extends Canvas implements Runnable
     {
         handler.tick();
         hud.tick();
+        spawner.tick();
     }
 
     private void render()
@@ -110,8 +120,8 @@ public class Game extends Canvas implements Runnable
 
         Graphics g = bs.getDrawGraphics();
 
-        g.setColor(Color.blue);
-        g.fillRect(0,0, WIDTH, HEIGHT);
+        g.setColor(Color.cyan);
+        g.fillRect(0,0, (int) WIDTH, (int) HEIGHT);
 
         handler.render(g);
 
@@ -121,7 +131,7 @@ public class Game extends Canvas implements Runnable
         bs.show();
     }
 
-    public static int clamp(int var, int min, int max)
+    public static float clamp(float var, float min, float max)
     {
         if (var >= max )
         {
