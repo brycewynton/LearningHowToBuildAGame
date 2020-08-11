@@ -18,25 +18,34 @@ public class Game extends Canvas implements Runnable
     private Handler handler;
     private HUD hud;
     private Spawn spawner;
+    private Menu menu;
+
+    public enum STATE
+    {
+        Menu,
+        Game;
+    }
+
+    public Menu.STATE gameState = STATE.Menu; // toggle this between Game and Menu
 
     public Game()
     {
         handler = new Handler(); // initialize this first to avoid a null pointer?
+        this.addKeyListener(new KeyInput(handler)); // this goes second to ensure user control
+        this.addMouseListener(menu);
 
-        this.addKeyListener(new KeyInput(handler));
-
-        new Window(WIDTH, HEIGHT, "Let's Build A Game!",this);
-
-        hud = new HUD();
-
-        spawner = new Spawn(handler, hud);
-
+        new Window(WIDTH, HEIGHT, "Let's Build A Game!",this); // initialize play window
+        hud = new HUD(); // add health bar
+        spawner = new Spawn(handler, hud); //add new enemy spawner
         r = new Random();
+        menu = new Menu(this, handler);
 
-        handler.addObject(new Player(WIDTH/2-32, HEIGHT/2-32, ID.Player , handler));
+        if ( gameState == STATE.Game)
+        {
+            handler.addObject(new Player(WIDTH/2-32, HEIGHT/2-32, ID.Player , handler));
 
-        handler.addObject(new EnemyBoss1((Game.WIDTH / 2)-78, -180, ID.EnemyBoss1, handler));
-
+            handler.addObject(new BasicEnemy(r.nextInt((int) Game.WIDTH) -50, r.nextInt((int) Game.HEIGHT)-50, ID.BasicEnemy, handler));
+        }
     }
 
     public synchronized void start()
@@ -95,8 +104,15 @@ public class Game extends Canvas implements Runnable
     private void tick()
     {
         handler.tick();
-        hud.tick();
-        spawner.tick();
+        if (gameState == STATE.Game)
+        {
+            hud.tick();
+            spawner.tick();
+        }
+        else if (gameState == STATE.Menu)
+        {
+            menu.tick();
+        }
     }
 
     private void render()
@@ -115,7 +131,14 @@ public class Game extends Canvas implements Runnable
 
         handler.render(g);
 
-        hud.render(g); // this placed second will place the display above the player
+        if (gameState == STATE.Game)
+        {
+            hud.render(g); // this placed second will place the display above the player
+        }
+        else if (gameState == STATE.Menu)
+        {
+            menu.render(g);
+        }
 
         g.dispose();
         bs.show();
